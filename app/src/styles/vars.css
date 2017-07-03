@@ -1,0 +1,32 @@
+:root {
+  --color-lblue: rgba(191, 192, 249, 1);
+  --color-blue: rgba(80, 82, 240, 1);
+  --color-dblue: rgba(37, 38, 110, 1);
+
+  --color-lred: rgba(255, 161, 150, 1);
+  --color-red: rgba(255, 83, 64, 1);
+  --color-dred: rgba(140, 46, 35, 1);
+
+  --color-lgreen: rgba(159, 246, 217, 1);
+  --color-green: rgba(79, 239, 186, 1);
+  --color-dgreen: rgba(58, 174, 136, 1);
+
+  --color-vlgray: rgba(233, 233, 233, 1);
+  --color-lgray: rgba(195, 195, 195, 1);
+  --color-gray: rgba(167, 167, 167, 1);
+  --color-dgray: rgba(89, 89, 89, 1);
+  --color-vdgray: rgba(62, 62, 62, 1);
+  --color-black: rgba(29, 29, 29, 1);
+
+  --font-body: 400 16px/24px 'Work Sans', sans-serif;
+  --font-meta: 300 12px/20px 'Work Sans', sans-serif;
+  --font-bold: 600 16px/24px 'Work Sans', sans-serif;
+  --font-header1: 300 32px/40px 'Work Sans', sans-serif;
+  --font-header2: 600 24px/32px 'Work Sans', sans-serif;
+  --font-header3: 600 20px/28px 'Work Sans', sans-serif;
+  --font-header4: 500 20px/28px 'Work Sans', sans-serif;
+
+  --pad-default: 1.5em;
+
+  --Grid-gutter-size: 24px;
+};

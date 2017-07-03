@@ -1,0 +1,13 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html {
+  font: var(--font-body);
+}
+
+h1 {
+  font: var(--font-header1);
+}
