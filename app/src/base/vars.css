@@ -18,15 +18,16 @@
   --color-vdgray: rgba(62, 62, 62, 1);
   --color-black: rgba(29, 29, 29, 1);
 
-  --font-body: 400 16px/24px 'Work Sans', sans-serif;
-  --font-meta: 300 12px/20px 'Work Sans', sans-serif;
-  --font-bold: 600 16px/24px 'Work Sans', sans-serif;
-  --font-header1: 300 32px/40px 'Work Sans', sans-serif;
-  --font-header2: 600 24px/32px 'Work Sans', sans-serif;
-  --font-header3: 600 20px/28px 'Work Sans', sans-serif;
-  --font-header4: 500 20px/28px 'Work Sans', sans-serif;
+  --font-body: 400 12px/24px 'Work Sans', sans-serif;
+  --font-meta: 300 10px/18px 'Work Sans', sans-serif;
+  --font-bold: 600 12px/24px 'Work Sans', sans-serif;
+  --font-header1: 300 42px/48px 'Work Sans', sans-serif;
+  --font-header2: 600 36px/42px 'Work Sans', sans-serif;
+  --font-header3: 600 30px/36px 'Work Sans', sans-serif;
+  --font-header4: 600 24px/30px 'Work Sans', sans-serif;
+  --font-header5: 500 18px/24px 'Work Sans', sans-serif;
 
-  --pad-default: 1.5em;
+  --sm-space: 12px;
 
   --Grid-gutter-size: 24px;
 };

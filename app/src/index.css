@@ -1,6 +1,8 @@
 @import 'suitcss';
+@import 'typicons.font';
 @import url('https://fonts.googleapis.com/css?family=Work+Sans');
-@import 'styles/**/*.css';
+@import 'base/**/*.css';
+@import 'application/**/*.css';
 @custom-media --sm-viewport (max-width: 640px);
 @custom-media --md-viewport (min-width: 640px) and (max-width: 1280px);
 @custom-media --lg-viewport (min-width: 1280px);
