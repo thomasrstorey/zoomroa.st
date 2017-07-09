@@ -280,6 +280,13 @@ module.exports = (grunt) => {
     copy: {
       dev: {
         files: [
+          {
+            expand: true,
+            cwd: 'node_modules/typicons.font/src/font',
+            src: ['**/*.eot', '**/*.woff', '**/*.ttf', '**/*.svg'],
+            dest: '../dist/css/',
+            filter: 'isFile',
+          },
           { expand: true, cwd: 'src', src: ['favicon.ico'], dest: '../dist/', filter: 'isFile' },
           { expand: true, cwd: 'src', src: ['*.html'], dest: '../dist/', filter: 'isFile' },
           { expand: true, cwd: 'src/images', src: ['*'], dest: '../dist/images/', filter: 'isFile' },

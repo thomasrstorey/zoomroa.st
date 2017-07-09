@@ -23,14 +23,14 @@ const AppView = Mn.View.extend({
   onRender() {
     _.each(Services, (BaseService) => {
       const Service = BaseService.extend({
-        region: this.getRegion(BaseService.name),
+        region: this.getRegion(BaseService.prototype.serviceName),
       });
       return new Service();
     });
     _.each(Components, (BaseComponent) => {
-      if (this.hasRegion(BaseComponent.name)) {
+      if (this.hasRegion(BaseComponent.prototype.componentName)) {
         const Component = BaseComponent.extend({
-          region: this.getRegion(BaseComponent.name),
+          region: this.getRegion(BaseComponent.prototype.componentName),
         });
         return new Component();
       }

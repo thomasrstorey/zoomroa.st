@@ -5,13 +5,16 @@ import ToastCollectionView from './ToastCollectionView';
 import ToastCollection from './ToastCollection';
 
 const ToasterService = Mn.Object.extend({
-  initialize(options = {}) {
-    this.region = options.region;
+  initialize() {
     this.collection = new ToastCollection();
     this.channel = Radio.channel('toaster');
     this.view = new ToastCollectionView({ collection: this.collection });
     this.region.show(this.view);
   },
+
+  serviceName: 'toaster',
+
+  region: null,
 
   channelName: 'toaster',
 

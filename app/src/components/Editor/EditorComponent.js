@@ -3,14 +3,14 @@ import Mn from 'backbone.marionette';
 import EditorRouter from './EditorRouter';
 
 const EditorComponent = Mn.Object.extend({
-  name: 'editor',
+  componentName: 'editor',
 
-  region: Mn.Region,
+  region: null,
 
   Router: EditorRouter,
 
   initialize(options = {}) {
-    this.router = new this.Router(options);
+    this.router = new this.Router({ ...options, region: this.region });
   },
 });
 

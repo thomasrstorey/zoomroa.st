@@ -27,7 +27,9 @@
   --font-header4: 600 24px/30px 'Work Sans', sans-serif;
   --font-header5: 500 18px/24px 'Work Sans', sans-serif;
 
-  --sm-space: 12px;
+  --sm-space: 6px;
+  --md-space: 12px;
+  --lg-space: 24px;
 
   --Grid-gutter-size: 24px;
 };
