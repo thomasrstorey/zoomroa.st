@@ -6,6 +6,7 @@ module.exports = (config) => {
     basePath: '',
     frameworks: ['mocha', 'chai', 'sinon'],
     files: [
+      'node_modules/babel-polyfill/dist/polyfill.js',
       'test/**/*.js',
     ],
     preprocessors: {
@@ -14,8 +15,9 @@ module.exports = (config) => {
     webpack: {
       devtool: 'source-map',
       resolve: {
-        extensions: ['.js'],
+        extensions: ['.js', '.hbs'],
       },
+
       module: {
         rules: [
           {
@@ -23,8 +25,18 @@ module.exports = (config) => {
             loader: 'babel-loader',
             exclude: /node_modules/,
             query: {
-              presets: ['env'],
+              presets: ['env', 'stage-3'],
             },
+          },
+          {
+            test: /\.hbs$/,
+            loader: 'handlebars-loader',
+            exclude: /node_modules/,
+          },
+          {
+            test: /\.html$/,
+            loader: 'html-loader',
+            exclude: /node_modules/,
           },
         ],
       },

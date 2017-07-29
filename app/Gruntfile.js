@@ -245,12 +245,17 @@ module.exports = (grunt) => {
               loader: 'babel-loader',
               exclude: /node_modules/,
               query: {
-                presets: ['stage-3'],
+                presets: ['env', 'stage-3'],
               },
             },
             {
               test: /\.hbs$/,
               loader: 'handlebars-loader',
+              exclude: /node_modules/,
+            },
+            {
+              test: /\.html$/,
+              loader: 'html-loader',
               exclude: /node_modules/,
             },
           ],
@@ -309,7 +314,6 @@ module.exports = (grunt) => {
 
   grunt.registerTask('test', () => {
     grunt.task.run([
-      'webpack:dev',
       'karma:unit',
     ]);
   });
