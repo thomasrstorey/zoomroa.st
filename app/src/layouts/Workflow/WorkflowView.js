@@ -4,6 +4,7 @@ import Radio from 'backbone.radio';
 import workflowTemplate from './workflowTemplate.hbs';
 
 const WorkflowView = Mn.View.extend({
+  className: 'Workflow',
   template: workflowTemplate,
 
   regions: {
