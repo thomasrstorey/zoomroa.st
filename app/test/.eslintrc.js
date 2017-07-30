@@ -16,5 +16,6 @@ module.exports = {
     describe: false,
     expect: false,
     it: false,
+    sinon: false,
   },
 };

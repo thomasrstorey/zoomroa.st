@@ -1,6 +1,9 @@
 import Bb from 'backbone';
 import Mn from 'backbone.marionette';
 
+import Services from '../services';
+import Layouts from '../layouts';
+import Components from '../components';
 import AppView from './AppView';
 
 const App = Mn.Application.extend({
@@ -10,7 +13,11 @@ const App = Mn.Application.extend({
   },
 
   onStart() {
-    const appView = new AppView();
+    const appView = new AppView({
+      serviceClasses: Services,
+      layoutClasses: Layouts,
+      componentClasses: Components,
+    });
     this.showView(appView);
     if (!Bb.History.started) {
       Bb.history.start();

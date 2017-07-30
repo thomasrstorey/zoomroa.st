@@ -4,23 +4,27 @@ import Radio from 'backbone.radio';
 import ToastCollectionView from './ToastCollectionView';
 import ToastCollection from './ToastCollection';
 
+const ToasterServiceOptions = ['region'];
+
 const ToasterService = Mn.Object.extend({
-  initialize() {
+  initialize(options = {}) {
+    this.mergeOptions(options, ToasterServiceOptions);
     this.collection = new ToastCollection();
     this.channel = Radio.channel('toaster');
     this.view = new ToastCollectionView({ collection: this.collection });
-    this.region.show(this.view);
   },
 
   serviceName: 'toaster',
-
-  region: null,
 
   channelName: 'toaster',
 
   radioEvents: {
     toast: 'onToast',
     clean: 'onClean',
+  },
+
+  show() {
+    this.region.show(this.view);
   },
 
   onToast(flavor, message, options = {}) {

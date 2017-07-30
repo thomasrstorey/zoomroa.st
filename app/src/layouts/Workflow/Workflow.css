@@ -1,0 +1,37 @@
+.Workflow {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.Workflow-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.Workflow-main {
+  flex: 1;
+  background: #eaeaea;
+  z-index: 1;
+}
+
+.Workflow-aside {
+  padding: var(--sm-space);
+  background: #fff;
+  z-index: 2;
+}
+
+.Workflow-aside--left {
+  order: -1;
+}
+
+@media (--lg-viewport) {
+  .Workflow-body {
+    flex-direction: row;
+  }
+
+  .Workflow-aside {
+    flex: 0 0 240px;
+  }
+}

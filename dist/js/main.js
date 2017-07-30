@@ -9,56 +9,78 @@ webpackJsonp([1],[
 /* 7 */,
 /* 8 */,
 /* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_marionette__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_backbone_marionette__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AppView__ = __webpack_require__(10);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+var _backbone = __webpack_require__(2);
 
+var _backbone2 = _interopRequireDefault(_backbone);
 
-const App = __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default.a.Application.extend({
+var _backbone3 = __webpack_require__(1);
+
+var _backbone4 = _interopRequireDefault(_backbone3);
+
+var _AppView = __webpack_require__(10);
+
+var _AppView2 = _interopRequireDefault(_AppView);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var App = _backbone4.default.Application.extend({
   region: {
     el: '[data-js-region-app]',
     replaceElement: true
   },
 
-  onStart() {
-    const appView = new __WEBPACK_IMPORTED_MODULE_2__AppView__["a" /* default */]();
+  onStart: function onStart() {
+    var appView = new _AppView2.default();
     this.showView(appView);
-    if (!__WEBPACK_IMPORTED_MODULE_0_backbone___default.a.History.started) {
-      __WEBPACK_IMPORTED_MODULE_0_backbone___default.a.history.start();
+    if (!_backbone2.default.History.started) {
+      _backbone2.default.history.start();
     }
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (App);
+exports.default = App;
 
 /***/ }),
 /* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_underscore__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_underscore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_underscore__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_marionette__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_backbone_marionette__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components__ = __webpack_require__(15);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+var _underscore = __webpack_require__(3);
 
+var _underscore2 = _interopRequireDefault(_underscore);
 
+var _backbone = __webpack_require__(1);
 
-const applicationTemplate = __webpack_require__(23);
+var _backbone2 = _interopRequireDefault(_backbone);
 
-const AppView = __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default.a.View.extend({
+var _services = __webpack_require__(22);
+
+var _services2 = _interopRequireDefault(_services);
+
+var _components = __webpack_require__(15);
+
+var _components2 = _interopRequireDefault(_components);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var applicationTemplate = __webpack_require__(23);
+
+var AppView = _backbone2.default.View.extend({
   className: 'Application',
   template: applicationTemplate,
   regions: {
@@ -72,17 +94,19 @@ const AppView = __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default.a.View
     }
   },
 
-  onRender() {
-    __WEBPACK_IMPORTED_MODULE_0_underscore___default.a.each(__WEBPACK_IMPORTED_MODULE_2__services__["a" /* default */], BaseService => {
-      const Service = BaseService.extend({
-        region: this.getRegion(BaseService.prototype.serviceName)
+  onRender: function onRender() {
+    var _this = this;
+
+    _underscore2.default.each(_services2.default, function (BaseService) {
+      var Service = BaseService.extend({
+        region: _this.getRegion(BaseService.prototype.serviceName)
       });
       return new Service();
     });
-    __WEBPACK_IMPORTED_MODULE_0_underscore___default.a.each(__WEBPACK_IMPORTED_MODULE_3__components__["a" /* default */], BaseComponent => {
-      if (this.hasRegion(BaseComponent.prototype.componentName)) {
-        const Component = BaseComponent.extend({
-          region: this.getRegion(BaseComponent.prototype.componentName)
+    _underscore2.default.each(_components2.default, function (BaseComponent) {
+      if (_this.hasRegion(BaseComponent.prototype.componentName)) {
+        var Component = BaseComponent.extend({
+          region: _this.getRegion(BaseComponent.prototype.componentName)
         });
         return new Component();
       }
@@ -91,105 +115,148 @@ const AppView = __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default.a.View
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (AppView);
+exports.default = AppView;
 
 /***/ }),
 /* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone_marionette__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditorRouter__ = __webpack_require__(13);
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _backbone = __webpack_require__(1);
 
+var _backbone2 = _interopRequireDefault(_backbone);
 
+var _EditorRouter = __webpack_require__(13);
 
+var _EditorRouter2 = _interopRequireDefault(_EditorRouter);
 
-const EditorComponent = __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.Object.extend({
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EditorComponent = _backbone2.default.Object.extend({
   componentName: 'editor',
 
   region: null,
 
-  Router: __WEBPACK_IMPORTED_MODULE_1__EditorRouter__["a" /* default */],
+  Router: _EditorRouter2.default,
 
-  initialize(options = {}) {
+  initialize: function initialize() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     this.router = new this.Router(_extends({}, options, { region: this.region }));
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (EditorComponent);
+exports.default = EditorComponent;
 
 /***/ }),
 /* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone__);
 
 
-const EditorModel = __WEBPACK_IMPORTED_MODULE_0_backbone___default.a.Model.extend({
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _backbone = __webpack_require__(2);
+
+var _backbone2 = _interopRequireDefault(_backbone);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EditorModel = _backbone2.default.Model.extend({
   defaults: {
     image: null
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (EditorModel);
+exports.default = EditorModel;
 
 /***/ }),
 /* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone_marionette__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__EditorModel__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__EditorView__ = __webpack_require__(14);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
+var _backbone = __webpack_require__(1);
 
+var _backbone2 = _interopRequireDefault(_backbone);
 
-const EditorController = __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.Object.extend({
-  initialize(options = {}) {
+var _EditorModel = __webpack_require__(12);
+
+var _EditorModel2 = _interopRequireDefault(_EditorModel);
+
+var _EditorView = __webpack_require__(14);
+
+var _EditorView2 = _interopRequireDefault(_EditorView);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EditorController = _backbone2.default.Object.extend({
+  initialize: function initialize() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     this.region = options.region;
   },
-
-  showEditor() {
-    const model = new __WEBPACK_IMPORTED_MODULE_1__EditorModel__["a" /* default */]();
-    this.region.show(new __WEBPACK_IMPORTED_MODULE_2__EditorView__["a" /* default */]({ model }));
+  showEditor: function showEditor() {
+    var model = new _EditorModel2.default();
+    this.region.show(new _EditorView2.default({ model: model }));
   }
 });
 
-const EditorRouter = __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.AppRouter.extend({
-  initialize(options = {}) {
+var EditorRouter = _backbone2.default.AppRouter.extend({
+  initialize: function initialize() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     this.controller = new EditorController(options);
   },
+
 
   appRoutes: {
     '(/)': 'showEditor'
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (EditorRouter);
+exports.default = EditorRouter;
 
 /***/ }),
 /* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_underscore__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_underscore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_underscore__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_marionette__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_backbone_marionette__);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-const editorTemplate = __webpack_require__(24);
+var _underscore = __webpack_require__(3);
 
-const EditorView = __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default.a.View.extend({
+var _underscore2 = _interopRequireDefault(_underscore);
+
+var _backbone = __webpack_require__(1);
+
+var _backbone2 = _interopRequireDefault(_backbone);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var editorTemplate = __webpack_require__(24);
+
+var EditorView = _backbone2.default.View.extend({
   className: 'Editor',
   template: editorTemplate,
   ui: {
@@ -205,117 +272,161 @@ const EditorView = __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default.a.V
     'drop @ui.target': 'onTargetDrop'
   },
 
-  onTargetDragOver(e) {
+  onTargetDragOver: function onTargetDragOver(e) {
     e.preventDefault();
   },
-
-  onTargetDragEnter(e) {
+  onTargetDragEnter: function onTargetDragEnter(e) {
     e.preventDefault();
     this.ui.target.addClass('Editor-target--dragover');
     this.ui.targetBox.addClass('Editor-targetBox--dragover');
   },
-
-  onTargetDragLeave(e) {
+  onTargetDragLeave: function onTargetDragLeave(e) {
     e.preventDefault();
     this.ui.target.removeClass('Editor-target--dragover');
     this.ui.targetBox.removeClass('Editor-targetBox--dragover');
   },
-
-  onTargetDrop(e) {
+  onTargetDrop: function onTargetDrop(e) {
     e.preventDefault();
-    const dataTransfer = e.originalEvent.dataTransfer;
-    if (__WEBPACK_IMPORTED_MODULE_0_underscore___default.a.isObject(dataTransfer) && __WEBPACK_IMPORTED_MODULE_0_underscore___default.a.isArray(dataTransfer.files)) {
+    var dataTransfer = e.originalEvent.dataTransfer;
+    if (_underscore2.default.isObject(dataTransfer) && _underscore2.default.isArray(dataTransfer.files)) {
       this.model.trigger('drop', e.dataTransfer.files[0]);
     }
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (EditorView);
+exports.default = EditorView;
 
 /***/ }),
 /* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Editor_EditorComponent__ = __webpack_require__(11);
 
 
-/* harmony default export */ __webpack_exports__["a"] = ([__WEBPACK_IMPORTED_MODULE_0__Editor_EditorComponent__["a" /* default */]]);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _EditorComponent = __webpack_require__(11);
+
+var _EditorComponent2 = _interopRequireDefault(_EditorComponent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = [_EditorComponent2.default];
 
 /***/ }),
 /* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__application_App__ = __webpack_require__(9);
 
 
-const app = new __WEBPACK_IMPORTED_MODULE_0__application_App__["a" /* default */]();
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _App = __webpack_require__(9);
+
+var _App2 = _interopRequireDefault(_App);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var app = new _App2.default();
 window.app = app;
 app.start();
 
-/* harmony default export */ __webpack_exports__["default"] = (app);
+exports.default = app;
 
 /***/ }),
 /* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ToastModel__ = __webpack_require__(19);
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _backbone = __webpack_require__(2);
 
+var _backbone2 = _interopRequireDefault(_backbone);
 
+var _ToastModel = __webpack_require__(19);
 
+var _ToastModel2 = _interopRequireDefault(_ToastModel);
 
-const ToastCollection = __WEBPACK_IMPORTED_MODULE_0_backbone___default.a.Collection.extend({
-  model(attributes, options = {}) {
-    const autoStart = options.collection.autoStart;
-    const modelOptions = _extends({}, options, { autoStart });
-    return new __WEBPACK_IMPORTED_MODULE_1__ToastModel__["a" /* default */](attributes, modelOptions);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ToastCollection = _backbone2.default.Collection.extend({
+  model: function model(attributes) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    var autoStart = options.collection.autoStart;
+    var modelOptions = _extends({}, options, { autoStart: autoStart });
+    return new _ToastModel2.default(attributes, modelOptions);
   },
+  initialize: function initialize(models) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  initialize(models, options = {}) {
     this.autoStart = options.autoStart;
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (ToastCollection);
+exports.default = ToastCollection;
 
 /***/ }),
 /* 18 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone_marionette__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ToastView__ = __webpack_require__(20);
 
 
-
-
-const ToastCollectionView = __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.CollectionView.extend({
-  childView: __WEBPACK_IMPORTED_MODULE_1__ToastView__["a" /* default */]
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (ToastCollectionView);
+var _backbone = __webpack_require__(1);
+
+var _backbone2 = _interopRequireDefault(_backbone);
+
+var _ToastView = __webpack_require__(20);
+
+var _ToastView2 = _interopRequireDefault(_ToastView);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ToastCollectionView = _backbone2.default.CollectionView.extend({
+  childView: _ToastView2.default
+});
+
+exports.default = ToastCollectionView;
 
 /***/ }),
 /* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_underscore__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_underscore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_underscore__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_backbone__);
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-const ToastModel = __WEBPACK_IMPORTED_MODULE_1_backbone___default.a.Model.extend({
+var _underscore = __webpack_require__(3);
+
+var _underscore2 = _interopRequireDefault(_underscore);
+
+var _backbone = __webpack_require__(2);
+
+var _backbone2 = _interopRequireDefault(_backbone);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ToastModel = _backbone2.default.Model.extend({
   defaults: {
     message: '',
     flavor: 'default',
@@ -325,50 +436,59 @@ const ToastModel = __WEBPACK_IMPORTED_MODULE_1_backbone___default.a.Model.extend
     dismissable: true
   },
 
-  initialize(attributes, options = {}) {
+  initialize: function initialize(attributes) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     if (options.autoStart === true) {
       this.start();
     }
   },
+  start: function start() {
+    var _this = this;
 
-  start() {
     if (this.get('ttl') > 0) {
-      this.set('timeoutID', window.setTimeout(() => {
-        this.unset('timeoutID');
-        this.dismiss();
+      this.set('timeoutID', window.setTimeout(function () {
+        _this.unset('timeoutID');
+        _this.dismiss();
       }, this.get('ttl') * 1000));
     }
   },
-
-  dismiss() {
+  dismiss: function dismiss() {
     this.set('alive', false);
     this.stop();
-    if (!__WEBPACK_IMPORTED_MODULE_0_underscore___default.a.isUndefined(this.collection)) {
+    if (!_underscore2.default.isUndefined(this.collection)) {
       this.collection.remove(this);
     }
   },
-
-  stop() {
-    if (this.has('timeoutID') && __WEBPACK_IMPORTED_MODULE_0_underscore___default.a.isNumber(this.get('timeoutID'))) {
+  stop: function stop() {
+    if (this.has('timeoutID') && _underscore2.default.isNumber(this.get('timeoutID'))) {
       window.clearTimeout(this.get('timeoutID'));
     }
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (ToastModel);
+exports.default = ToastModel;
 
 /***/ }),
 /* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone_marionette__);
 
 
-const toastTemplate = __webpack_require__(25);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-const ToastView = __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.View.extend({
+var _backbone = __webpack_require__(1);
+
+var _backbone2 = _interopRequireDefault(_backbone);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var toastTemplate = __webpack_require__(25);
+
+var ToastView = _backbone2.default.View.extend({
   template: toastTemplate,
 
   ui: {
@@ -379,39 +499,52 @@ const ToastView = __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.Vi
     'click @ui.dismiss': 'onClickDismiss'
   },
 
-  onClickDismiss() {
+  onClickDismiss: function onClickDismiss() {
     this.model.dismiss();
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (ToastView);
+exports.default = ToastView;
 
 /***/ }),
 /* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone_marionette__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_radio__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_radio___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_backbone_radio__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ToastCollectionView__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ToastCollection__ = __webpack_require__(17);
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _backbone = __webpack_require__(1);
 
+var _backbone2 = _interopRequireDefault(_backbone);
 
+var _backbone3 = __webpack_require__(6);
 
+var _backbone4 = _interopRequireDefault(_backbone3);
 
+var _ToastCollectionView = __webpack_require__(18);
 
+var _ToastCollectionView2 = _interopRequireDefault(_ToastCollectionView);
 
-const ToasterService = __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.Object.extend({
-  initialize() {
-    this.collection = new __WEBPACK_IMPORTED_MODULE_3__ToastCollection__["a" /* default */]();
-    this.channel = __WEBPACK_IMPORTED_MODULE_1_backbone_radio___default.a.channel('toaster');
-    this.view = new __WEBPACK_IMPORTED_MODULE_2__ToastCollectionView__["a" /* default */]({ collection: this.collection });
+var _ToastCollection = __webpack_require__(17);
+
+var _ToastCollection2 = _interopRequireDefault(_ToastCollection);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ToasterService = _backbone2.default.Object.extend({
+  initialize: function initialize() {
+    this.collection = new _ToastCollection2.default();
+    this.channel = _backbone4.default.channel('toaster');
+    this.view = new _ToastCollectionView2.default({ collection: this.collection });
     this.region.show(this.view);
   },
+
 
   serviceName: 'toaster',
 
@@ -424,30 +557,40 @@ const ToasterService = __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default
     clean: 'onClean'
   },
 
-  onToast(flavor, message, options = {}) {
+  onToast: function onToast(flavor, message) {
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     this.collection.add(_extends({
-      flavor,
-      message,
+      flavor: flavor,
+      message: message,
       ttl: 10
     }, options));
   },
-
-  onClean() {
+  onClean: function onClean() {
     this.collection.reset();
   }
 });
 
-/* harmony default export */ __webpack_exports__["a"] = (ToasterService);
+exports.default = ToasterService;
 
 /***/ }),
 /* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Toaster_ToasterService__ = __webpack_require__(21);
 
 
-/* harmony default export */ __webpack_exports__["a"] = ([__WEBPACK_IMPORTED_MODULE_0__Toaster_ToasterService__["a" /* default */]]);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _ToasterService = __webpack_require__(21);
+
+var _ToasterService2 = _interopRequireDefault(_ToasterService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = [_ToasterService2.default];
 
 /***/ }),
 /* 23 */

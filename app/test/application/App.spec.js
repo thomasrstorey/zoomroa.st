@@ -13,18 +13,17 @@ function getBodyContent(html) {
   return bodyContent;
 }
 
-const fixture = getBodyContent(index);
-
-beforeEach(() => {
-  document.body.insertAdjacentHTML('afterbegin', fixture);
-  app = new App();
-});
-
-afterEach(() => {
-  document.body.removeChild(document.getElementById('zoomroast'));
-});
-
 describe('App', () => {
+  beforeEach(() => {
+    const fixture = getBodyContent(index);
+    document.body.insertAdjacentHTML('afterbegin', fixture);
+    app = new App();
+  });
+
+  afterEach(() => {
+    document.body.removeChild(document.getElementById('zoomroast'));
+  });
+
   describe('.region', () => {
     it('defines the app region uniquely', () => {
       const region = app.getRegion();

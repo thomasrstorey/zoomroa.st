@@ -7,13 +7,13 @@ module.exports = (config) => {
     frameworks: ['mocha', 'chai', 'sinon'],
     files: [
       'node_modules/babel-polyfill/dist/polyfill.js',
-      'test/**/*.js',
+      'test/index.js',
     ],
     preprocessors: {
-      'test/**/*.js': ['webpack'],
+      'test/index.js': ['webpack', 'sourcemap'],
     },
     webpack: {
-      devtool: 'source-map',
+      devtool: 'inline-source-map',
       resolve: {
         extensions: ['.js', '.hbs'],
       },
@@ -49,6 +49,7 @@ module.exports = (config) => {
       'karma-mocha-reporter',
       karmaWebpack,
       'karma-babel-preprocessor',
+      'karma-sourcemap-loader',
     ],
     reporters: ['mocha'],
     port: 9876,

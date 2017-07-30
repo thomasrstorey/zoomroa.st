@@ -1,37 +1,4 @@
 .Application {
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
-}
-
-.Application-body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.Application-main {
-  flex: 1;
-  background: #eaeaea;
-  z-index: 1;
-}
-
-.Application-aside {
-  padding: var(--sm-space);
-  background: #fff;
-  z-index: 2;
-}
-
-.Application-aside--left {
-  order: -1;
-}
-
-@media (--lg-viewport) {
-  .Application-body {
-    flex-direction: row;
-  }
-
-  .Application-aside {
-    flex: 0 0 240px;
-  }
+  width: 100%;
 }

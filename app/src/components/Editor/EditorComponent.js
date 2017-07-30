@@ -1,16 +1,18 @@
 import Mn from 'backbone.marionette';
 
-import EditorRouter from './EditorRouter';
+import EditorView from './EditorView';
+import EditorModel from './EditorModel';
 
 const EditorComponent = Mn.Object.extend({
   componentName: 'editor',
+  channelName: 'component',
+  radioRequests: {
+    'component:editor': 'getEditor',
+  },
 
-  region: null,
-
-  Router: EditorRouter,
-
-  initialize(options = {}) {
-    this.router = new this.Router({ ...options, region: this.region });
+  getEditor(options = {}, modelAttributes = {}, modelOptions = {}) {
+    const model = new EditorModel({ ...modelAttributes }, { ...modelOptions });
+    return new EditorView({ model, ...options });
   },
 });
 

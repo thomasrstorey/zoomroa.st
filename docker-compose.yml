@@ -8,21 +8,3 @@ services:
     volumes:
       - ./dist:/usr/share/nginx/html
     container_name: 'nginx-zoomroa.st'
-
-  npm:
-    image: node
-    volumes:
-      - ./dist:/dist
-      - ./app:/app
-    working_dir: /app
-    container_name: npm-zoomroa.st
-    entrypoint: npm
-
-  grunt:
-    image: node
-    volumes:
-      - ./dist:/dist
-      - ./app:/app
-    working_dir: /app
-    container_name: grunt-zoomroa.st
-    entrypoint: node_modules/grunt-cli/bin/grunt
