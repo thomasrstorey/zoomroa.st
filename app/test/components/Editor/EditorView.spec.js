@@ -33,14 +33,51 @@ describe('EditorView', () => {
   });
 
   describe('.onTargetDragEnter', () => {
-    it('adds the Editor-target--dragover class');
+    it('adds the Editor-target(Box)--dragover classes', () => {
+      editorView.once('render', () => {
+        editorView.triggerMethod('target:dragenter', new Bb.$.Event());
+        expect(editorView.ui.target.hasClass('Editor-target--dragover'))
+          .to.equal(true);
+        expect(editorView.ui.targetBox.hasClass('Editor-targetBox--dragover'))
+          .to.equal(true);
+      });
+      editorView.render();
+    });
   });
 
   describe('.onTargetDragLeave', () => {
-    it('removes the Editor-target--dragover class');
+    it('removes the Editor-target(Box)--dragover classes', () => {
+      editorView.once('render', () => {
+        editorView.triggerMethod('target:dragenter', new Bb.$.Event());
+        editorView.triggerMethod('target:dragleave', new Bb.$.Event());
+        expect(editorView.ui.target.hasClass('Editor-target--dragover'))
+          .to.equal(false);
+        expect(editorView.ui.targetBox.hasClass('Editor-targetBox--dragover'))
+          .to.equal(false);
+      });
+      editorView.render();
+    });
   });
 
   describe('.onTargetDrop', () => {
-    it('triggers the drop event on view.model with the dropped files');
+    it('triggers the drop event on view.model with the dropped files', () => {
+      const file = { test: 'test' };
+      const eventMock = {
+        preventDefault: sinon.spy(),
+        originalEvent: {
+          dataTransfer: { files: [file] },
+        },
+      };
+      const model = new Bb.Model();
+      const modelMock = sinon.mock(model);
+      modelMock.expects('trigger').withArgs('drop', file);
+
+      editorView = new EditorView({
+        el: $fixture,
+        model: model,
+      });
+      editorView.triggerMethod('target:drop', eventMock);
+      expect(modelMock.verify()).to.equal(true);
+    });
   });
 });

@@ -13,23 +13,23 @@ const EditorView = Mn.View.extend({
   },
 
   events: {
-    'dragover @ui.target': 'onTargetDragOver',
-    'dragleave @ui.target': 'onTargetDragLeave',
-    'dragenter @ui.target': 'onTargetDragEnter',
+    'dragover @ui.target': 'onTargetDragover',
+    'dragleave @ui.target': 'onTargetDragleave',
+    'dragenter @ui.target': 'onTargetDragenter',
     'drop @ui.target': 'onTargetDrop',
   },
 
-  onTargetDragOver(e) {
+  onTargetDragover(e) {
     e.preventDefault();
   },
 
-  onTargetDragEnter(e) {
+  onTargetDragenter(e) {
     e.preventDefault();
     this.ui.target.addClass('Editor-target--dragover');
     this.ui.targetBox.addClass('Editor-targetBox--dragover');
   },
 
-  onTargetDragLeave(e) {
+  onTargetDragleave(e) {
     e.preventDefault();
     this.ui.target.removeClass('Editor-target--dragover');
     this.ui.targetBox.removeClass('Editor-targetBox--dragover');
@@ -39,7 +39,7 @@ const EditorView = Mn.View.extend({
     e.preventDefault();
     const dataTransfer = e.originalEvent.dataTransfer;
     if (_.isObject(dataTransfer) && _.isArray(dataTransfer.files)) {
-      this.model.trigger('drop', e.dataTransfer.files[0]);
+      this.model.trigger('drop', dataTransfer.files[0]);
     }
   },
 });
