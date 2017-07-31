@@ -30,6 +30,12 @@ describe('AppView', () => {
   });
 
   describe('.regions', () => {
+    beforeEach(() => {
+      sinon.stub(appView, 'onRender');
+    });
+    afterEach(() => {
+      appView.onRender.restore();
+    });
     it('defines an main region which exists in the DOM', () => {
       appView.once('render', () => {
         const editorRegionEl = appView.$el.find(

@@ -7,11 +7,9 @@ const WorkflowLayoutOptions = ['region'];
 const WorkflowLayout = Mn.Object.extend({
   layoutName: 'workflow',
 
-  Router: WorkflowRouter,
-
   initialize(options = {}) {
     this.mergeOptions(options, WorkflowLayoutOptions);
-    this.router = new this.Router({ ...options, region: this.region });
+    this.router = new WorkflowRouter({ ...options, region: this.region });
   },
 });
 

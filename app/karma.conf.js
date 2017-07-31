@@ -4,7 +4,7 @@ const karmaWebpack = require('karma-webpack');
 module.exports = (config) => {
   config.set({
     basePath: '',
-    frameworks: ['mocha', 'chai', 'sinon'],
+    frameworks: ['mocha', 'chai', 'sinon', 'chai-sinon'],
     files: [
       'node_modules/babel-polyfill/dist/polyfill.js',
       'test/index.js',
@@ -45,6 +45,7 @@ module.exports = (config) => {
       'karma-mocha',
       'karma-chai',
       'karma-sinon',
+      'karma-chai-sinon',
       'karma-phantomjs-launcher',
       'karma-mocha-reporter',
       karmaWebpack,

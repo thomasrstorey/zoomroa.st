@@ -8,7 +8,8 @@ module.exports = {
     ecmaVersion: 6,
   },
   rules: {
-    quotes: ['error', 'single', { allowTemplateLiterals: true }]
+    'no-unused-expressions': 0,
+    quotes: ['error', 'single', { allowTemplateLiterals: true }],
   },
   globals: {
     afterEach: false,

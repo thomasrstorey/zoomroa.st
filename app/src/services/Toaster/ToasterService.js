@@ -10,7 +10,6 @@ const ToasterService = Mn.Object.extend({
   initialize(options = {}) {
     this.mergeOptions(options, ToasterServiceOptions);
     this.collection = new ToastCollection();
-    this.channel = Radio.channel('toaster');
     this.view = new ToastCollectionView({ collection: this.collection });
   },
 

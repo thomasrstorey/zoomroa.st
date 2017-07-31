@@ -1,6 +1,6 @@
 import Mn from 'backbone.marionette';
 
-const toastTemplate = require('./toastTemplate.hbs');
+import toastTemplate from './toastTemplate.hbs';
 
 const ToastView = Mn.View.extend({
   template: toastTemplate,

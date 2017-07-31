@@ -8,16 +8,16 @@ const WorkflowView = Mn.View.extend({
   template: workflowTemplate,
 
   regions: {
-    settings: {
-      el: '[data-js-region-settings]',
+    sidebarRight: {
+      el: '[data-js-region-sidebar-right]',
       replaceElement: true,
     },
-    editor: {
-      el: '[data-js-region-editor]',
+    workspace: {
+      el: '[data-js-region-workspace]',
       replaceElement: true,
     },
-    help: {
-      el: '[data-js-region-help]',
+    sidebarLeft: {
+      el: '[data-js-region-sidebar-left]',
       replaceElement: true,
     },
   },
@@ -25,7 +25,7 @@ const WorkflowView = Mn.View.extend({
   onRender() {
     const channel = Radio.channel('component');
     const editor = channel.request('component:editor');
-    this.showChildView('editor', editor);
+    this.showChildView('workspace', editor);
   },
 });
 

@@ -18,14 +18,12 @@ const ToastModel = Bb.Model.extend({
   },
 
   start() {
-    if (this.get('ttl') > 0) {
-      this.set(
-        'timeoutID',
-        window.setTimeout(() => {
-          this.unset('timeoutID');
-          this.dismiss();
-        }, this.get('ttl') * 1000));
-    }
+    this.set(
+      'timeoutID',
+      window.setTimeout(() => {
+        this.unset('timeoutID');
+        this.dismiss();
+      }, this.get('ttl') * 1000));
   },
 
   dismiss() {
