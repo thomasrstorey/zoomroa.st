@@ -40,10 +40,8 @@ const styles = StyleSheet.create({
       this.el.addEventListener('mousedown', this.onMouseDown.bind(this));
       this.el.addEventListener('mousemove', this.onMouseMove.bind(this));
       this.el.addEventListener('mouseup', this.onMouseUp.bind(this));
+
       this.context = this.el.getContext('2d');
-      const svg = document.createElementNS("http://www.w3.org/2000/svg",'svg');
-      this.xform = svg.createSVGMatrix();
-      this.point = svg.createSVGPoint();
       this.draw();
     }
   }
@@ -64,12 +62,9 @@ const styles = StyleSheet.create({
         x: event.offsetX || event.pageX - this.el.offsetLeft,
         y: event.offsetY || event.pageY - this.el.offsetTop,
       };
-      this.point.x = drag.x;
-      this.point.y = drag.y;
-      this.point.matrixTransform(this.xform.inverse());
-      const dx = this.point.x - this.origin.x;
-      const dy = this.point.y - this.origin.y
-      this.xform.translate(dx, dy);
+      const dx = drag.x - this.origin.x;
+      const dy = drag.y - this.origin.y
+
       this.context.translate(dx, dy);
       this.clear();
       this.draw();

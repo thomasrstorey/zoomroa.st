@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
   area: {
     backgroundColor: '#fff',
     border: 'dashed 5px #777',
+    boxSizing: 'border-box',
     color: '#777',
     height: '100%',
     left: '0',
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '0',
     width: '100%',
+    zIndex: '0',
   },
   areaDragover: {
     opacity: '0.5',

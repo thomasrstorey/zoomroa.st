@@ -8,6 +8,10 @@ class ImageStore {
   addFile(file) {
     const fileReader = new FileReader();
     fileReader.onload = (event) => {
+      const selectedImage = this.selected;
+      if (this.selected) {
+        this.selected.selected = false;
+      }
       this.images.push(
         new EditorImage(
           this,
