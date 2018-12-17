@@ -1,2 +1,4 @@
 # zoomroa.st
-Dockerized for your convenience. Simply run `docker-compose up -d` and navigate to `localhost:8080` to start zoomroasting.
+An app for automatically generating "zoomroast" memes.
+
+Run `npm run dev` and navigate to `localhost:3000`
