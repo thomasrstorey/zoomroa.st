@@ -1,0 +1,14 @@
+.link {
+  margin-right: 10px;
+  text-decoration: none;
+  border-bottom: 1px dashed;
+}
+
+.link::last-child {
+  margin-right: 0;
+}
+
+.title {
+  font-size: 20px;
+  cursor: pointer;
+}

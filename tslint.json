@@ -1,0 +1,19 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+      "quotemark": [true, "single", "jsx-double", "avoid-template"]
+    },
+    "rulesDirectory": [],
+    "include": [
+        "/var/folders/**/*.tsx",
+        "/var/folders/**/*.ts",
+        "./pages/**/*.tsx",
+        "./pages/**/*.ts",
+        "./components/**/*.tsx",
+        "./components/**/*.ts"
+    ]
+}
