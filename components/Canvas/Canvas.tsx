@@ -2,10 +2,9 @@ import Konva from 'konva';
 import React from 'react';
 import { Group, Image as CanvasImage, KonvaContainerComponent, Layer, Rect, Stage } from 'react-konva';
 
-type TGroup = KonvaContainerComponent<Konva.Group<Konva.Node>, Konva.ContainerConfig>;
-
 interface IProps {
   imageFile: File;
+  onSelectionUpdate: (x: number, y: number, width: number, height: number) => void;
 }
 
 const onWheel = (event: Konva.KonvaEventObject<WheelEvent>) => {
@@ -28,87 +27,235 @@ const onWheel = (event: Konva.KonvaEventObject<WheelEvent>) => {
   stage.batchDraw();
 };
 
-const Canvas = (props: IProps) => {
-  let imageNode: Konva.Image|null = null;
-  let group: Konva.Group<Konva.Node>|null = null;
-  let layer: Konva.Layer|null;
-  const image = new Image();
-  image.onload = () => {
-    if (imageNode) {
-      imageNode.getLayer().batchDraw();
+const getOnMouseOver = (x: number, y: number, layerRef: React.RefObject<Konva.Layer>) =>
+  (event: Konva.KonvaEventObject<MouseEvent>) => {
+    document.body.style.cursor = 'pointer';
+    const rect = event.currentTarget as Konva.Rect;
+    rect.moveToTop();
+    rect.width(22);
+    rect.height(22);
+    rect.offset({x, y});
+    if (layerRef.current) {
+      layerRef.current.draw();
     }
   };
-  image.src = URL.createObjectURL(props.imageFile);
-  return (
-    <Stage
-      width={900}
-      height={600}
-      draggable={true}
-      onWheel={onWheel}
-    >
-      <Layer ref={(node: Konva.Layer) => { layer = node; }}>
-        <CanvasImage image={image} ref={(node: Konva.Image) => { imageNode = node; }} />
-        <Group x={450} y={300} ref={(node) => { group = node; }} draggable={true}>
-          <Rect
-            x={0}
-            y={0}
-            fill="yellow"
-            fillEnabled={true}
-            width={20}
-            height={20}
-            offset={{ x: 10, y: 10 }}
-            draggable={true}
-            onMouseDown={(event: Konva.KonvaEventObject<MouseEvent>) => {
-              if (group) {
-                group.draggable(false);
-              }
-            }}
-            onDragMove={(event: Konva.KonvaEventObject<DragEvent>) => {
 
+const getOnMouseOut = (x: number, y: number, layerRef: React.RefObject<Konva.Layer>) =>
+  (event: Konva.KonvaEventObject<MouseEvent>) => {
+    document.body.style.cursor = 'default';
+    const rect = event.currentTarget as Konva.Rect;
+    rect.width(20);
+    rect.height(20);
+    rect.offset({x, y});
+    if (layerRef.current) {
+      layerRef.current.draw();
+    }
+  };
+
+const getOnDragEnd = (
+  layerRef: React.RefObject<Konva.Layer>,
+  groupRef: React.RefObject<Konva.Group>) =>
+  () => {
+    if (groupRef.current) {
+      groupRef.current.draggable(true);
+    }
+    if (layerRef.current) {
+      layerRef.current.draw();
+    }
+  };
+
+const getOnMouseDown = (groupRef: React.RefObject<Konva.Group>) =>
+  () => {
+    if (groupRef.current) {
+      groupRef.current.draggable(false);
+    }
+  };
+
+const getOnDragMove = (
+  neighborXRef: React.RefObject<Konva.Node>,
+  neighborYRef: React.RefObject<Konva.Node>,
+  tlRef: React.RefObject<Konva.Node>,
+  brRef: React.RefObject<Konva.Node>,
+  rectRef: React.RefObject<Konva.Rect>,
+  groupRef: React.RefObject<Konva.Group>,
+  layerRef: React.RefObject<Konva.Layer>,
+  callback: (x: number, y: number, width: number, height: number) => void,
+  ) => (event: Konva.KonvaEventObject<DragEvent>) => {
+    const active = event.currentTarget;
+    const x = active.x();
+    const y = active.y();
+    const neighborX = neighborXRef.current!;
+    const neighborY = neighborYRef.current!;
+    const rect = rectRef.current!;
+    const layer = layerRef.current!;
+    const tl = tlRef.current!;
+    const br = brRef.current!;
+    neighborX.x(x);
+    neighborY.y(y);
+    const width = br.x() - tl.x();
+    const height = br.y() - tl.y();
+    rect.position(tl.position());
+    if (width && height) {
+      rect.width(width);
+      rect.height(height);
+    }
+    const group = groupRef.current!;
+    callback(group.x() + tl.x(), group.y() + tl.y(), rect.width(), rect.height());
+    layer.draw();
+  };
+
+class Canvas extends React.Component<IProps> {
+  public shouldComponentUpdate(nextProps: IProps) {
+    const currentFile = this.props.imageFile;
+    const nextFile = nextProps.imageFile;
+    return currentFile.name !== nextFile.name;
+  }
+
+  public render() {
+    const imageRef: React.RefObject<Konva.Image> = React.createRef();
+    const groupRef: React.RefObject<Konva.Group<Konva.Node>> = React.createRef();
+    const layerRef: React.RefObject<Konva.Layer> = React.createRef();
+    const rectRef: React.RefObject<Konva.Rect> = React.createRef();
+    const tlRef: React.RefObject<Konva.Rect> = React.createRef();
+    const trRef: React.RefObject<Konva.Rect> = React.createRef();
+    const brRef: React.RefObject<Konva.Rect> = React.createRef();
+    const blRef: React.RefObject<Konva.Rect> = React.createRef();
+    const image = new Image();
+    image.onload = () => {
+      if (imageRef.current) {
+        imageRef.current.getLayer().batchDraw();
+      }
+    };
+    image.src = URL.createObjectURL(this.props.imageFile);
+    return (
+      <Stage
+        width={900}
+        height={600}
+        draggable={true}
+        onWheel={onWheel}
+      >
+        <Layer ref={layerRef}>
+          <CanvasImage image={image} ref={imageRef} />
+          <Group
+            x={450}
+            y={300}
+            ref={groupRef}
+            draggable={true}
+            onDragMove={() => {
+              const rect = rectRef.current!;
+              const group = groupRef.current!;
+              const tl = tlRef.current!;
+              this.props.onSelectionUpdate(group.x() + tl.x(), group.y() + tl.y(), rect.width(), rect.height());
             }}
-            onDragEnd={() => {
-              if (group) {
-                group.draggable(true);
-              }
-              if (layer) {
-                layer.draw();
-              }
-            }}
-            onMouseOver={(event: Konva.KonvaEventObject<MouseEvent>) => {
-              document.body.style.cursor = 'pointer';
-              const rect = event.currentTarget as Konva.Rect;
-              rect.moveToTop();
-              rect.width(22);
-              rect.height(22);
-              rect.offset({x: 11, y: 11 });
-              if (layer) {
-                layer.draw();
-              }
-            }}
-            onMouseOut={(event: Konva.KonvaEventObject<MouseEvent>) => {
-              document.body.style.cursor = 'default';
-              const rect = event.currentTarget as Konva.Rect;
-              rect.width(20);
-              rect.height(20);
-              rect.offset({x: 10, y: 10 });
-              if (layer) {
-                layer.draw();
-              }
-            }}
-          />
-          <Rect
-            x={0}
-            y={0}
-            width={200}
-            height={200}
-            stroke="yellow"
-            strokeEnabled={true}
-            strokeWidth={5}
-          />
-        </Group>
-      </Layer>
-    </Stage>
-  );
-};
+          >
+            <Rect
+              x={0}
+              y={0}
+              width={200}
+              height={200}
+              stroke="yellow"
+              strokeEnabled={true}
+              strokeWidth={5}
+              ref={rectRef}
+            />
+            <Rect
+              ref={tlRef}
+              x={0}
+              y={0}
+              fill="yellow"
+              fillEnabled={true}
+              width={20}
+              height={20}
+              offset={{ x: 10, y: 10 }}
+              draggable={true}
+              onMouseDown={getOnMouseDown(groupRef)}
+              onDragMove={getOnDragMove(
+                blRef,
+                trRef,
+                tlRef,
+                brRef,
+                rectRef,
+                groupRef,
+                layerRef,
+                this.props.onSelectionUpdate)}
+              onDragEnd={getOnDragEnd(layerRef, groupRef)}
+              onMouseOver={getOnMouseOver(11, 11, layerRef)}
+              onMouseOut={getOnMouseOut(10, 10, layerRef)}
+            />
+            <Rect
+              ref={trRef}
+              x={200}
+              y={0}
+              fill="yellow"
+              fillEnabled={true}
+              width={20}
+              height={20}
+              offset={{ x: 10, y: 10 }}
+              draggable={true}
+              onMouseDown={getOnMouseDown(groupRef)}
+              onDragMove={getOnDragMove(brRef,
+                tlRef,
+                tlRef,
+                brRef,
+                rectRef,
+                groupRef,
+                layerRef,
+                this.props.onSelectionUpdate)}
+              onDragEnd={getOnDragEnd(layerRef, groupRef)}
+              onMouseOver={getOnMouseOver(11, 11, layerRef)}
+              onMouseOut={getOnMouseOut(10, 10, layerRef)}
+            />
+            <Rect
+              ref={brRef}
+              x={200}
+              y={200}
+              fill="yellow"
+              fillEnabled={true}
+              width={20}
+              height={20}
+              offset={{ x: 10, y: 10 }}
+              draggable={true}
+              onMouseDown={getOnMouseDown(groupRef)}
+              onDragMove={getOnDragMove(trRef,
+                blRef,
+                tlRef,
+                brRef,
+                rectRef,
+                groupRef,
+                layerRef,
+                this.props.onSelectionUpdate)}
+              onDragEnd={getOnDragEnd(layerRef, groupRef)}
+              onMouseOver={getOnMouseOver(11, 11, layerRef)}
+              onMouseOut={getOnMouseOut(10, 10, layerRef)}
+            />
+            <Rect
+              ref={blRef}
+              x={0}
+              y={200}
+              fill="yellow"
+              fillEnabled={true}
+              width={20}
+              height={20}
+              offset={{ x: 10, y: 10 }}
+              draggable={true}
+              onMouseDown={getOnMouseDown(groupRef)}
+              onDragMove={getOnDragMove(tlRef,
+                brRef,
+                tlRef,
+                brRef,
+                rectRef,
+                groupRef,
+                layerRef,
+                this.props.onSelectionUpdate)}
+              onDragEnd={getOnDragEnd(layerRef, groupRef)}
+              onMouseOver={getOnMouseOver(11, 11, layerRef)}
+              onMouseOut={getOnMouseOut(10, 10, layerRef)}
+            />
+          </Group>
+        </Layer>
+      </Stage>
+    );
+  }
+}
 
 export default Canvas;
