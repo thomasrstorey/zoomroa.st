@@ -112,9 +112,10 @@ class Canvas extends React.Component<IProps> {
   }
 
   public render() {
-    const imageRef: React.RefObject<Konva.Image> = React.createRef();
-    const groupRef: React.RefObject<Konva.Group<Konva.Node>> = React.createRef();
+    const stageRef: React.RefObject<Konva.Stage> = React.createRef();
     const layerRef: React.RefObject<Konva.Layer> = React.createRef();
+    const groupRef: React.RefObject<Konva.Group<Konva.Node>> = React.createRef();
+    const imageRef: React.RefObject<Konva.Image> = React.createRef();
     const rectRef: React.RefObject<Konva.Rect> = React.createRef();
     const tlRef: React.RefObject<Konva.Rect> = React.createRef();
     const trRef: React.RefObject<Konva.Rect> = React.createRef();
@@ -122,8 +123,21 @@ class Canvas extends React.Component<IProps> {
     const blRef: React.RefObject<Konva.Rect> = React.createRef();
     const image = new Image();
     image.onload = () => {
-      if (imageRef.current) {
-        imageRef.current.getLayer().batchDraw();
+      let scaleFactor = 1.0;
+      if (image.width > image.height && image.width > 900) {
+        scaleFactor = 900 / image.width;
+      } else if (image.height > image.width && image.height > 600) {
+        scaleFactor = 600 / image.height;
+      }
+      const centerX = (-image.width / 2) * scaleFactor + 450;
+      const centerY = (-image.height / 2) * scaleFactor + 300;
+      if (stageRef.current && groupRef.current) {
+        stageRef.current.scale({ x: scaleFactor, y: scaleFactor });
+        stageRef.current.position({ x: centerX, y: centerY });
+        groupRef.current.position({ x: image.width / 2 - 100, y: image.height / 2 - 100 });
+      }
+      if (layerRef.current) {
+        layerRef.current.batchDraw();
       }
     };
     image.src = URL.createObjectURL(this.props.imageFile);
@@ -133,12 +147,13 @@ class Canvas extends React.Component<IProps> {
         height={600}
         draggable={true}
         onWheel={onWheel}
+        ref={stageRef}
       >
         <Layer ref={layerRef}>
           <CanvasImage image={image} ref={imageRef} />
           <Group
-            x={450}
-            y={300}
+            x={0}
+            y={0}
             ref={groupRef}
             draggable={true}
             onDragMove={() => {
