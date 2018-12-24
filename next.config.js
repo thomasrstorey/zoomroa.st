@@ -15,14 +15,24 @@ module.exports = withPlugins([
     },
   ],
   [ts]], {
-  webpack(config, options) {
-    if (options.isServer) {
-      config.plugins.push(new ForkTsCheckerWebpackPlugin({
-        tslint: true,
-        tslintAutoFix: true,
-        reportFiles: ["pages/**/*.{ts,tsx}"],
-      }));
-    }
-    return config;
-  },
-});
+    exportPathMap() {
+      return {
+        "/": {
+          page: "/",
+        },
+        "/help": {
+          page: "/help",
+        },
+      };
+    },
+    webpack(config, options) {
+      if (options.isServer) {
+        config.plugins.push(new ForkTsCheckerWebpackPlugin({
+          tslint: "./tslint.json",
+          tslintAutoFix: true,
+          reportFiles: ["pages/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
+        }));
+      }
+      return config;
+    },
+  });

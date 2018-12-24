@@ -98,7 +98,9 @@ class Canvas extends React.Component<IProps> {
         height={canvasHeight}
         draggable={true}
         onWheel={onWheel}
-        ref={this.stageRef}
+        // XXX: For some reason typescript thinks the ref object is a react-konva Stage rather
+        // than a Konva.Stage which is simply not true.
+        ref={this.stageRef as any}
       >
         <Layer ref={this.layerRef}>
           <CanvasImage image={image} ref={this.imageRef} />

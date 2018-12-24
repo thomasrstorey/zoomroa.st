@@ -1,12 +1,14 @@
 {
   "name": "zoomroa.st",
   "version": "1.0.0",
-  "description": "Dockerized for your convenience. Simply run `docker-compose up -d` and navigate to `localhost:8080` to start zoomroasting.",
+  "description": "app to generate zoomroast memes",
   "main": "index.js",
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "export": "next export && cp favicon.ico out",
+    "deploy": "scp -i ~/.ssh/do_key -r out/. root@zoomroa.st:/var/www/zoomroa.st/public_html/"
   },
   "repository": {
     "type": "git",

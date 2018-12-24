@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React from 'react';
 import Canvas from '../components/Canvas';
 import DropZone from '../components/DropZone';
@@ -29,6 +30,9 @@ class Index extends React.Component<{}, IState> {
   public render() {
     return (
       <>
+        <Head>
+          <title>zoomroast</title>
+        </Head>
         <Header/>
         {this.state.image ? (
           <div style={{display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center'}}>

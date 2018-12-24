@@ -15,5 +15,14 @@
     "sourceMap": true,
     "strict": true,
     "target": "esnext"
-  }
+  },
+  "include": [
+    "pages/**/*",
+    "components/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "out",
+    "**/*.spec.ts"
+  ]
 }
