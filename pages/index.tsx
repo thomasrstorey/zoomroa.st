@@ -11,16 +11,16 @@ interface IState {
   y: number;
   width: number;
   height: number;
-  crops: string[];
+  roast: string;
   steps: number;
 }
 
 class Index extends React.Component<{}, IState> {
   public state: IState = {
-    crops: [],
     file: null,
     height: 0,
     image: null,
+    roast: '',
     steps: 2,
     width: 0,
     x: 0,
@@ -41,12 +41,20 @@ class Index extends React.Component<{}, IState> {
                 <Canvas image={this.state.image} onSelectionUpdate={this.onSelectionUpdate} />
               </div>
               <label>Images</label>
-              <input type="number" value={this.state.steps + 1} step={1} onChange={
-                (event: React.FormEvent<HTMLInputElement>) => {
-                  this.setState({ steps: event.currentTarget.valueAsNumber - 1 });
-                }
-              }/>
-              <button onClick={this.onClickGenerate}>Generate Images</button>
+              <select value={this.state.steps} onChange={(event: React.FormEvent<HTMLSelectElement>) => {
+                this.setState({ steps: +event.currentTarget.value });
+              }}>
+                <option value="1">2</option>
+                <option value="2">3</option>
+                <option value="3">4</option>
+                <option value="4">5</option>
+                <option value="5">6</option>
+                <option value="6">7</option>
+                <option value="7">8</option>
+                <option value="8">9</option>
+                <option value="9">10</option>
+              </select>
+              <button onClick={this.onClickGenerate}>Generate Roast</button>
               <canvas id="renderCanvas" style={{display: 'none'}} width={900} height={600}/>
             </div>
           </div>
@@ -57,7 +65,15 @@ class Index extends React.Component<{}, IState> {
           flexDirection: 'column',
           justifyContent: 'center',
         }}>
-          {this.state.crops && this.state.crops.map((url) => <div><img src={url}/></div>)}
+          {this.state.roast && (
+            <>
+            <div style={{width: '620px'}}>
+              <h3>Your Fresh Roast:</h3>
+              <p>Right-click the image and choose "Save As" to download.</p>
+            </div>
+            <div style={{border: '2px dashed #ddd'}}><img src={this.state.roast}/></div>
+            </>
+          )}
         </div>
       </>
     );
@@ -79,26 +95,37 @@ class Index extends React.Component<{}, IState> {
   public onClickGenerate = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const { image, x, y, width, height, steps } = this.state;
-    const crops = [];
     const canvas = document.getElementById('renderCanvas') as HTMLCanvasElement;
     const ctx = canvas && canvas.getContext('2d');
+    const stepConfigs = [];
     if (canvas && ctx && image) {
-      canvas.width = 600;
+      canvas.width = 620;
       const widthSlope = (image.width - width) / steps;
       const heightSlope = (image.height - height) / steps;
       const xSlope = -x / steps;
       const ySlope = -y / steps;
       for (let i = steps; i >= 0; i--) {
-        const stepWidth = widthSlope * i + width;
-        const stepHeight = heightSlope * i + height;
-        const stepX = xSlope * i + x;
-        const stepY = ySlope * i + y;
-        canvas.height = canvas.width * (stepHeight / stepWidth);
-        ctx.drawImage(image, stepX, stepY, stepWidth, stepHeight, 0, 0, canvas.width, canvas.height);
-        const croppedDataURL = canvas.toDataURL('image/png', 1.0);
-        crops.push(croppedDataURL);
+        const srcWidth = widthSlope * i + width;
+        const srcHeight = heightSlope * i + height;
+        stepConfigs.push({
+          destHeight: 600 * (srcHeight / srcWidth),
+          srcHeight,
+          srcWidth,
+          srcX: xSlope * i + x,
+          srcY: ySlope * i + y,
+        });
       }
-      this.setState({ crops });
+      const totalYMargins = (10 * stepConfigs.length) + 10;
+      canvas.height = stepConfigs.reduce((prev, curr) => prev + curr.destHeight, 0) + totalYMargins;
+      let destY = 10;
+      const destX = 10;
+      stepConfigs.forEach((config) => {
+        const { srcX, srcY, srcWidth, srcHeight, destHeight } = config;
+        ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, destX, destY, 600, destHeight);
+        destY += destHeight + 10;
+      });
+      const roast = canvas.toDataURL('image/png', 1.0);
+      this.setState({ roast });
     }
   }
 }
