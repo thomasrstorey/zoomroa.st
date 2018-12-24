@@ -3,7 +3,7 @@ import React from 'react';
 import { link, title } from './Header.css';
 
 const Header = () => (
-  <div style={{display: 'flex'}}>
+  <div style={{display: 'flex', marginBottom: '10px'}}>
     <div style={{flex: 1}}>
       <Link href="/">
         <span className={title}>zoomroa.st</span>

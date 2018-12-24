@@ -5,10 +5,12 @@ interface IProps {
   onFile: (file: File) => void;
 }
 
+const ACCEPT = ['image/jpeg', 'image/png'];
+
 const onDrop = (onFile: (file: File) => void) => (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
   const files = Array.from(event.dataTransfer.files);
-  if (files.length) {
+  if (files.length && ACCEPT.includes(files[0].type)) {
     onFile(files[0]);
   }
 };
@@ -40,6 +42,7 @@ const DropZone = (props: IProps) => {
       </div>
       <input
         type="file"
+        accept={ACCEPT.join(',')}
         style={{display: 'none'}}
         ref={
           (input: HTMLInputElement) => {
