@@ -124,8 +124,7 @@ class Index extends React.Component<{}, IState> {
         ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, destX, destY, 600, destHeight);
         destY += destHeight + 10;
       });
-      const roast = canvas.toDataURL('image/png', 1.0);
-      this.setState({ roast });
+      canvas.toBlob((blob) => this.setState({ roast: URL.createObjectURL(blob) }));
     }
   }
 }
