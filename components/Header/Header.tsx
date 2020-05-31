@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
-import { link, title } from './Header.css';
+import { link, title } from './Header.module.css';
 
 const Header = () => (
   <>

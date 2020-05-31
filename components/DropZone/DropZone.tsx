@@ -1,5 +1,5 @@
 import React from 'react';
-import { dropZone, link } from './DropZone.css';
+import { dropZone, link } from './DropZone.module.css';
 
 interface IProps {
   onFile: (file: File) => void;
@@ -37,7 +37,7 @@ const DropZone = (props: IProps) => {
     <div onDrop={onDrop(props.onFile)} onDragOver={onDragOver} className={dropZone}>
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <p>Drag and drop an image file in this box to start zoomroasting.</p>
-        <p>Or, <a href="#" className={link} onClick={onClick}>click here</a> to choose a file.</p>
+        <p>Or, <a href="#" className={link} onClick={onClick}>upload a file through a file picker</a>.</p>
         <p>Supported file types: <code>.jpg</code>, <code>.png</code></p>
       </div>
       <input

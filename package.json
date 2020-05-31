@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "export": "next export && cp favicon.ico out",
-    "deploy": "scp -i ~/.ssh/do_key -r out/. root@zoomroa.st:/var/www/zoomroa.st/public_html/"
+    "deploy": "scp -i ~/.ssh/id_rsa -r out/. thomas@zoomroa.st:/var/www/zoomroa.st/public_html/"
   },
   "repository": {
     "type": "git",
@@ -23,17 +23,14 @@
   "homepage": "https://github.com/thomasrstorey/zoomroa.st#readme",
   "dependencies": {
     "@types/next": "^7.0.5",
-    "@types/react": "^16.7.17",
-    "@zeit/next-css": "^1.0.1",
+    "@types/react": "^16.9.35",
     "@zeit/next-typescript": "^1.1.1",
-    "fork-ts-checker-webpack-plugin": "^0.5.2",
     "konva": "^2.6.0",
-    "next": "^7.0.2",
-    "next-compose-plugins": "^2.1.1",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-konva": "^16.6.31",
-    "typescript": "^3.2.2"
+    "next": "^9.4.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-konva": "^16.8.6",
+    "typescript": "^3.9.0-beta"
   },
   "devDependencies": {
     "eslint": "^5.10.0",

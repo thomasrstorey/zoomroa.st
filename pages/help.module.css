@@ -1,0 +1,7 @@
+.paragraph {
+  max-width: 400px;
+}
+
+.paragraph li {
+  margin-bottom: 10px;
+}

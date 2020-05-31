@@ -2,9 +2,16 @@ import Konva from 'konva';
 import React from 'react';
 import { Group, Image as CanvasImage, Layer, Rect, Stage } from 'react-konva';
 
+export interface ISelection {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 interface IProps {
   image: HTMLImageElement;
-  onSelectionUpdate: (x: number, y: number, width: number, height: number) => void;
+  onSelectionUpdate: (selection: ISelection) => void;
   canvasWidth?: number;
   canvasHeight?: number;
   selectWidth?: number;
@@ -79,7 +86,12 @@ class Canvas extends React.Component<IProps> {
       x: image.width / 2 - selectWidth / 2,
       y: image.height / 2 - selectHeight / 2,
     });
-    this.props.onSelectionUpdate(group.x(), group.y(), selectWidth, selectHeight);
+    this.props.onSelectionUpdate({
+      height: selectHeight,
+      width: selectWidth,
+      x: group.x(),
+      y: group.y(),
+    });
     this.layerRef.current!.batchDraw();
   }
 
@@ -113,7 +125,12 @@ class Canvas extends React.Component<IProps> {
               const rect = this.rectRef.current!;
               const group = this.groupRef.current!;
               const tl = this.tlRef.current!;
-              this.props.onSelectionUpdate(group.x() + tl.x(), group.y() + tl.y(), rect.width(), rect.height());
+              this.props.onSelectionUpdate({
+                height: rect.height(),
+                width: rect.width(),
+                x: group.x() + tl.x(),
+                y: group.y() + tl.y(),
+              });
             }}
           >
             <Rect
@@ -217,8 +234,12 @@ class Canvas extends React.Component<IProps> {
     rect.width(width);
     rect.height(height);
     const group = this.groupRef.current!;
-    this.props.onSelectionUpdate(
-      group.x() + tl.x(), group.y() + tl.y(), rect.width(), rect.height());
+    this.props.onSelectionUpdate({
+      height: rect.height(),
+      width: rect.width(),
+      x: group.x() + tl.x(),
+      y: group.y() + tl.y(),
+    });
     layer.draw();
   }
 
