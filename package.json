@@ -1,6 +1,6 @@
 {
   "name": "zoomroa.st",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "app to generate zoomroast memes",
   "main": "index.js",
   "scripts": {
