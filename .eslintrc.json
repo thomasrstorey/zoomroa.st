@@ -1,21 +1,22 @@
 {
+    "root": true,
+    "parser": "@typescript-eslint/parser",
     "env": {
         "browser": true,
         "es6": true
     },
-    "extends": "eslint:recommended",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
-        },
-        "sourceType": "module"
-    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "next"
+    ],
     "plugins": [
-        "react"
+        "react",
+        "@typescript-eslint",
+        "@next/eslint-plugin-next"
     ],
     "rules": {
-        "indent": [
+        "@typescript-eslint/indent": [
             "error",
             2
         ],
@@ -30,6 +31,7 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "@next/next/no-img-element": "off"
     }
 }

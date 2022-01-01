@@ -1,8 +1,11 @@
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React, {useState} from 'react';
-import Canvas, { ISelection } from '../components/Canvas';
+import type { ISelection } from '../components/Canvas';
 import DropZone from '../components/DropZone';
 import Header from '../components/Header';
+
+const Canvas = dynamic(() => import('../components/Canvas'), { ssr: false });
 
 function generateRoast(
   { x, y, width, height }: ISelection,
@@ -38,12 +41,18 @@ function generateRoast(
     canvas.height = stepConfigs.reduce((prev, curr) => prev + curr.destHeight, 0) + totalYMargins;
     let destY = 10;
     const destX = 10;
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     stepConfigs.forEach((config) => {
       const { srcX, srcY, srcWidth, srcHeight, destHeight } = config;
       ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, destX, destY, 600, destHeight);
       destY += destHeight + 10;
     });
-    canvas.toBlob((blob) => resolve(URL.createObjectURL(blob)));
+    canvas.toBlob((blob) => {
+      if (blob !== null) {
+        resolve(URL.createObjectURL(blob));
+      }
+    });
   });
 }
 
@@ -64,9 +73,10 @@ function Index() {
     <>
       <Head>
         <title>zoomroast</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico"/>
       </Head>
       <Header/>
-      {!!image ? (
+      {image ? (
         <article style={{display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'center'}}>
           <section style={{padding: '10px', border: '2px dashed #ddd'}}>
             <div style={{marginBottom: '10px'}}>
@@ -86,11 +96,11 @@ function Index() {
               <option value="8">9</option>
               <option value="9">10</option>
             </select>
-              <button onClick={async (event) => {
-                event.preventDefault();
-                const out = await generateRoast(selection, image, steps);
-                setRoast(out);
-              }}>Generate Roast</button>
+            <button onClick={async (event) => {
+              event.preventDefault();
+              const out = await generateRoast(selection, image, steps);
+              setRoast(out);
+            }}>Generate Roast</button>
             <canvas id="renderCanvas" style={{display: 'none'}} width={900} height={600}/>
           </section>
         </article>
@@ -103,11 +113,18 @@ function Index() {
       }}>
         {!!roast && (
           <>
-          <div style={{width: '620px'}}>
-            <h3>Your Fresh Roast:</h3>
-            <p>Right-click the image and choose "Save As" to download.</p>
-          </div>
-          <div style={{border: '2px dashed #ddd'}}><img src={roast}/></div>
+            <div style={{width: '620px'}}>
+              <h3>Your Fresh Roast:</h3>
+              <p>Right-click the image and choose &quot;Save As&quot; to download.</p>
+            </div>
+            <div style={{border: '2px dashed #ddd'}}>
+              <img
+                alt={`An image composed of a sequence of crops from your chosen image,
+                      arranged vertically from most zoomed out at the top, to most zoomed 
+                      in at the bottom.`} 
+                src={roast}
+              />
+            </div>
           </>
         )}
       </div>

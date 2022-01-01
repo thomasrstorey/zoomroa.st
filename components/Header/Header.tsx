@@ -1,31 +1,33 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { link, title } from './Header.module.css';
 
-const Header = () => (
-  <>
-  <Head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131308605-1" key="gtag"></script>
-    <script dangerouslySetInnerHTML={{__html: `
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-131308605-1');
-    `}} key="gtag-config"></script>
-  </Head>
-  <div style={{display: 'flex', marginBottom: '10px'}}>
-    <div style={{flex: 1}}>
-      <Link href="/">
-        <span className={title}>zoomroa.st</span>
-      </Link>
-    </div>
-    <Link href="/help">
-      <a className={link}>Help</a>
-    </Link>
-  </div>
-  </>
-);
+function Header() {
+  const router = useRouter();
+  return (
+    <>
+      <Head>
+      </Head>
+      <div style={{display: 'flex', marginBottom: '10px'}}>
+        <div style={{flex: 1}}>
+          <Link passHref href="/">
+            <span className={title}>zoomroa.st</span>
+          </Link>
+        </div>
+        {router.pathname.includes('help') ? (
+          <Link href={'/'}>
+            <a className={link}>Back</a>
+          </Link>
+        ) : (
+          <Link href={'/help'}>
+            <a className={link}>Help</a>
+          </Link>
+        )}
+      </div>
+    </>
+  );
+}
 
 export default Header;

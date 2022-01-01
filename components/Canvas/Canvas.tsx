@@ -1,6 +1,10 @@
 import Konva from 'konva';
+import type { Vector2d } from 'konva/lib/types';
 import React from 'react';
-import { Group, Image as CanvasImage, Layer, Rect, Stage } from 'react-konva';
+import { Group, Image as CanvasImage, Layer, Stage } from 'react-konva';
+
+import BoundingBox from './BoundingBox';
+import Handle from './Handle';
 
 export interface ISelection {
   x: number;
@@ -19,48 +23,31 @@ interface IProps {
   anchorSize?: number;
 }
 
+interface IState {
+  selectPos: Vector2d;
+  selectHeight: number;
+  selectWidth: number;
+  scale: number;
+}
+
 const CANVAS_WIDTH = 900;
 const CANVAS_HEIGHT = 600;
 const SELECT_START_WIDTH = 200;
 const SELECT_START_HEIGHT = 200;
-const ANCHOR_SIZE = 20;
 
-const onWheel = (event: Konva.KonvaEventObject<WheelEvent>) => {
-  event.evt.preventDefault();
-  const scaleBy = 1.03;
-  const stage = event.target.getStage();
-  const currentScale = stage.scaleX();
-  const newScale = event.evt.deltaY > 0 ? currentScale * scaleBy : currentScale / scaleBy;
-  const currentPos = stage.getPointerPosition();
-  const dirVector = {
-    x: currentPos.x / currentScale - stage.x() / currentScale,
-    y: currentPos.y / currentScale - stage.y() / currentScale,
-  };
-  const newPos = {
-    x: -(dirVector.x - currentPos.x / newScale) * newScale,
-    y: -(dirVector.y - currentPos.y / newScale) * newScale,
-  };
-  stage.scale({ x: newScale, y: newScale });
-  stage.position(newPos);
-  stage.batchDraw();
-};
 
-class Canvas extends React.Component<IProps> {
+class Canvas extends React.Component<IProps, IState> {
   private stageRef: React.RefObject<Konva.Stage> = React.createRef();
   private layerRef: React.RefObject<Konva.Layer> = React.createRef();
-  private groupRef: React.RefObject<Konva.Group<Konva.Node>> = React.createRef();
+  private groupRef: React.RefObject<Konva.Group> = React.createRef();
   private imageRef: React.RefObject<Konva.Image> = React.createRef();
-  private rectRef: React.RefObject<Konva.Rect> = React.createRef();
-  private tlRef: React.RefObject<Konva.Rect> = React.createRef();
-  private trRef: React.RefObject<Konva.Rect> = React.createRef();
-  private brRef: React.RefObject<Konva.Rect> = React.createRef();
-  private blRef: React.RefObject<Konva.Rect> = React.createRef();
 
-  public shouldComponentUpdate(nextProps: IProps) {
-    const currentImage = this.props.image;
-    const nextImage = nextProps.image;
-    return currentImage.src !== nextImage.src;
-  }
+  public state: IState = {
+    selectPos: { x: 0, y: 0 },
+    selectHeight: SELECT_START_HEIGHT,
+    selectWidth: SELECT_START_WIDTH,
+    scale: 1.0,
+  };
 
   public componentDidMount() {
     const {
@@ -78,8 +65,11 @@ class Canvas extends React.Component<IProps> {
     }
     const centerX = (-image.width / 2) * scaleFactor + canvasWidth / 2;
     const centerY = (-image.height / 2) * scaleFactor + canvasHeight / 2;
-    const stage = this.stageRef.current!;
-    const group = this.groupRef.current!;
+    const stage = this.stageRef.current;
+    const group = this.groupRef.current;
+    if (!group || !stage) {
+      return;
+    }
     stage.scale({ x: scaleFactor, y: scaleFactor });
     stage.position({ x: centerX, y: centerY });
     group.position({
@@ -92,7 +82,14 @@ class Canvas extends React.Component<IProps> {
       x: group.x(),
       y: group.y(),
     });
-    this.layerRef.current!.batchDraw();
+    this.setState({
+      selectHeight: selectHeight,
+      selectWidth: selectWidth,
+      scale: stage.scale().x,
+    });
+    if (this.layerRef.current) {
+      this.layerRef.current.batchDraw();
+    }
   }
 
   public render() {
@@ -100,112 +97,65 @@ class Canvas extends React.Component<IProps> {
       image,
       canvasWidth = CANVAS_WIDTH,
       canvasHeight = CANVAS_HEIGHT,
-      selectWidth = SELECT_START_WIDTH,
-      selectHeight = SELECT_START_HEIGHT,
-      anchorSize = ANCHOR_SIZE,
     } = this.props;
+    const { selectPos, selectHeight, selectWidth, scale } = this.state;
     return (
       <Stage
         width={canvasWidth}
         height={canvasHeight}
         draggable={true}
-        onWheel={onWheel}
-        // XXX: For some reason typescript thinks the ref object is a react-konva Stage rather
-        // than a Konva.Stage which is simply not true.
-        ref={this.stageRef as any}
+        onWheel={this.onWheel}
+        ref={this.stageRef}
       >
         <Layer ref={this.layerRef}>
           <CanvasImage image={image} ref={this.imageRef} />
           <Group
             x={0}
             y={0}
+            height={selectHeight}
+            width={selectWidth}
             ref={this.groupRef}
             draggable={true}
-            onDragMove={() => {
-              const rect = this.rectRef.current!;
-              const group = this.groupRef.current!;
-              const tl = this.tlRef.current!;
-              this.props.onSelectionUpdate({
-                height: rect.height(),
-                width: rect.width(),
-                x: group.x() + tl.x(),
-                y: group.y() + tl.y(),
-              });
-            }}
+            onDragMove={this.groupOnDragMove}
           >
-            <Rect
-              x={0}
-              y={0}
-              width={selectWidth}
+            <BoundingBox
+              x={selectPos.x}
+              y={selectPos.y}
               height={selectHeight}
-              stroke="yellow"
-              strokeEnabled={true}
-              strokeWidth={5}
-              ref={this.rectRef}
+              width={selectWidth}
+              scale={scale}
             />
-            <Rect
-              ref={this.tlRef}
-              x={0}
-              y={0}
-              fill="yellow"
-              fillEnabled={true}
-              width={anchorSize}
-              height={anchorSize}
-              offset={{ x: anchorSize / 2, y: anchorSize / 2 }}
-              draggable={true}
-              onMouseDown={this.onMouseDown}
-              onDragMove={this.getOnDragMove(this.blRef, this.trRef)}
-              onDragEnd={this.onDragEnd}
-              onMouseOver={this.onMouseOver}
-              onMouseOut={this.onMouseOut}
+            <Handle
+              x={selectPos.x}
+              y={selectPos.y}
+              onUpdate={this.onTopLeftHandleUpdate}
+              setGroupDraggable={this.setGroupDraggable}
+              refreshLayer={this.refreshLayer}
+              scale={scale}
             />
-            <Rect
-              ref={this.trRef}
-              x={200}
-              y={0}
-              fill="yellow"
-              fillEnabled={true}
-              width={anchorSize}
-              height={anchorSize}
-              offset={{ x: 10, y: 10 }}
-              draggable={true}
-              onMouseDown={this.onMouseDown}
-              onDragMove={this.getOnDragMove(this.brRef, this.tlRef)}
-              onDragEnd={this.onDragEnd}
-              onMouseOver={this.onMouseOver}
-              onMouseOut={this.onMouseOut}
+            <Handle
+              x={selectPos.x + selectWidth}
+              y={selectPos.y}
+              onUpdate={this.onTopRightHandleUpdate}
+              setGroupDraggable={this.setGroupDraggable}
+              refreshLayer={this.refreshLayer}
+              scale={scale}
             />
-            <Rect
-              ref={this.brRef}
-              x={200}
-              y={200}
-              fill="yellow"
-              fillEnabled={true}
-              width={20}
-              height={20}
-              offset={{ x: 10, y: 10 }}
-              draggable={true}
-              onMouseDown={this.onMouseDown}
-              onDragMove={this.getOnDragMove(this.trRef, this.blRef)}
-              onDragEnd={this.onDragEnd}
-              onMouseOver={this.onMouseOver}
-              onMouseOut={this.onMouseOut}
+            <Handle
+              x={selectPos.x + selectWidth}
+              y={selectPos.y + selectHeight}
+              onUpdate={this.onBottomRightHandleUpdate}
+              setGroupDraggable={this.setGroupDraggable}
+              refreshLayer={this.refreshLayer}
+              scale={scale}
             />
-            <Rect
-              ref={this.blRef}
-              x={0}
-              y={200}
-              fill="yellow"
-              fillEnabled={true}
-              width={20}
-              height={20}
-              offset={{ x: 10, y: 10 }}
-              draggable={true}
-              onMouseDown={this.onMouseDown}
-              onDragMove={this.getOnDragMove(this.tlRef, this.brRef)}
-              onDragEnd={this.onDragEnd}
-              onMouseOver={this.onMouseOver}
-              onMouseOut={this.onMouseOut}
+            <Handle
+              x={selectPos.x}
+              y={selectPos.y + selectHeight}
+              onUpdate={this.onBottomLeftHandleUpdate}
+              setGroupDraggable={this.setGroupDraggable}
+              refreshLayer={this.refreshLayer}
+              scale={scale}
             />
           </Group>
         </Layer>
@@ -213,76 +163,120 @@ class Canvas extends React.Component<IProps> {
     );
   }
 
-  private getOnDragMove = (
-  neighborXRef: React.RefObject<Konva.Node>,
-  neighborYRef: React.RefObject<Konva.Node>,
-  ) => (event: Konva.KonvaEventObject<DragEvent>) => {
-    const active = event.currentTarget;
-    const x = active.x();
-    const y = active.y();
-    const neighborX = neighborXRef.current!;
-    const neighborY = neighborYRef.current!;
-    const rect = this.rectRef.current!;
-    const layer = this.layerRef.current!;
-    const tl = this.tlRef.current!;
-    const br = this.brRef.current!;
-    neighborX.x(x);
-    neighborY.y(y);
-    const width = br.x() - tl.x();
-    const height = br.y() - tl.y();
-    rect.position(tl.position());
-    rect.width(width);
-    rect.height(height);
-    const group = this.groupRef.current!;
+  private groupOnDragMove = () => {
+    const group = this.groupRef.current;
+    if (!group) {
+      return;
+    }
     this.props.onSelectionUpdate({
-      height: rect.height(),
-      width: rect.width(),
-      x: group.x() + tl.x(),
-      y: group.y() + tl.y(),
+      height: group.height(),
+      width: group.width(),
+      x: group.x() + this.state.selectPos.x,
+      y: group.y() + this.state.selectPos.y,
     });
-    layer.draw();
+  };
+
+
+  private onTopLeftHandleUpdate = (topLeft: Vector2d) => {
+    const bottomRight = this.getBottomRight();
+    const height = bottomRight.y - topLeft.y;
+    const width = bottomRight.x - topLeft.x;
+    this.onHandleUpdate(topLeft, height, width);
+  };
+
+  private onTopRightHandleUpdate = (topRight: Vector2d) => {
+    const bottomRight = this.getBottomRight();
+    const topLeft = this.getTopLeft();
+    const height = bottomRight.y - topRight.y;
+    const width = topRight.x - topLeft.x;
+    this.onHandleUpdate({ x: topLeft.x, y: topRight.y }, height, width);
+  };
+
+  private onBottomRightHandleUpdate = (bottomRight: Vector2d) => {
+    const topLeft = this.getTopLeft();
+    const height = bottomRight.y - topLeft.y;
+    const width = bottomRight.x - topLeft.x;
+    this.onHandleUpdate(topLeft, height, width);
+  };
+
+  private onBottomLeftHandleUpdate = (bottomLeft: Vector2d) => {
+    const topLeft = this.getTopLeft();
+    const bottomRight = this.getBottomRight();
+    const height = bottomLeft.y - topLeft.y;
+    const width = bottomRight.x - bottomLeft.x;
+    this.onHandleUpdate({ x: bottomLeft.x, y: topLeft.y }, height, width);
+  };
+
+  private onHandleUpdate(pos: Vector2d, height: number, width: number) {
+    const group = this.groupRef.current;
+    if (!group) {
+      return;
+    }
+    this.props.onSelectionUpdate({
+      height,
+      width,
+      x: group.x() + pos.x,
+      y: group.y() + pos.y,
+    });
+    this.setState({
+      selectPos: pos,
+      selectHeight: height,
+      selectWidth: width,
+    });
   }
 
-  private onDragEnd = () => {
+  private onWheel = (event: Konva.KonvaEventObject<WheelEvent>) => {
+    event.evt.preventDefault();
+    const scaleBy = 1.03;
+    const stage = event.target.getStage();
+    if (stage === null) {
+      return;
+    }
+    const currentScale = stage.scaleX();
+    const newScale = event.evt.deltaY > 0 ? currentScale * scaleBy : currentScale / scaleBy;
+    const currentPos = stage.getPointerPosition();
+    if (currentPos === null) {
+      return;
+    }
+    const dirVector = {
+      x: currentPos.x / currentScale - stage.x() / currentScale,
+      y: currentPos.y / currentScale - stage.y() / currentScale,
+    };
+    const newPos = {
+      x: -(dirVector.x - currentPos.x / newScale) * newScale,
+      y: -(dirVector.y - currentPos.y / newScale) * newScale,
+    };
+    stage.scale({ x: newScale, y: newScale });
+    stage.position(newPos);
+    stage.batchDraw();
+    this.setState({ scale: stage.scale().x });
+  };
+
+  private setGroupDraggable = (draggable: boolean) => {
     if (this.groupRef.current) {
-      this.groupRef.current.draggable(true);
+      this.groupRef.current.draggable(draggable);
     }
+  };
+
+  private refreshLayer = () => {
     if (this.layerRef.current) {
       this.layerRef.current.draw();
     }
-  }
+  };
 
-  private onMouseDown = () => {
-    if (this.groupRef.current) {
-      this.groupRef.current.draggable(false);
-    }
-  }
+  private getBottomRight = () => {
+    return {
+      x: this.state.selectPos.x + this.state.selectWidth,
+      y: this.state.selectPos.y + this.state.selectHeight,
+    };
+  };
 
-  private onMouseOver = (event: Konva.KonvaEventObject<MouseEvent>) => {
-    const { anchorSize = ANCHOR_SIZE } = this.props;
-    const size = anchorSize + 2;
-    document.body.style.cursor = 'pointer';
-    const rect = event.currentTarget as Konva.Rect;
-    rect.moveToTop();
-    rect.width(size);
-    rect.height(size);
-    rect.offset({x: size / 2, y: size / 2});
-    if (this.layerRef.current) {
-      this.layerRef.current.draw();
-    }
-  }
-
-  private onMouseOut = (event: Konva.KonvaEventObject<MouseEvent>) => {
-    const { anchorSize = ANCHOR_SIZE } = this.props;
-    document.body.style.cursor = 'default';
-    const rect = event.currentTarget as Konva.Rect;
-    rect.width(anchorSize);
-    rect.height(anchorSize);
-    rect.offset({x: anchorSize / 2, y: anchorSize / 2});
-    if (this.layerRef.current) {
-      this.layerRef.current.draw();
-    }
-  }
+  private getTopLeft = () => {
+    return {
+      x: this.state.selectPos.x,
+      y: this.state.selectPos.y,
+    };
+  };
 }
 
 export default Canvas;
