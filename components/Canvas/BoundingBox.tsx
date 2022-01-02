@@ -2,11 +2,11 @@ import React from 'react';
 import { Group, Rect } from 'react-konva';
 
 interface IProps {
-  x: number,
-  y: number,
-  height: number,
-  width: number,
-  scale: number,
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+  scale: number;
 }
 
 class BoundingBox extends React.Component<IProps> {

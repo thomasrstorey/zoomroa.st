@@ -69,6 +69,7 @@ function Index() {
     };
     imageEl.src = URL.createObjectURL(uploadedFile);
   };
+
   return (
     <>
       <Head>

@@ -24,10 +24,10 @@ interface IProps {
 }
 
 interface IState {
-  selectPos: Vector2d,
-  selectHeight: number,
-  selectWidth: number,
-  scale: number,
+  selectPos: Vector2d;
+  selectHeight: number;
+  selectWidth: number;
+  scale: number;
 }
 
 const SELECT_START_WIDTH = 200;

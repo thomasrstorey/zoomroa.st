@@ -40,10 +40,12 @@ function DropZone(props: IProps) {
   return (
     <div onDrop={onDrop(props.onFile)} onDragOver={onDragOver} className={dropZone}>
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-        <p>Drag and drop an image file in this box to start zoomroasting.</p>
+        <p style={{ textAlign: 'center' }}>Drag and drop an image file in this box to start zoomroasting.</p>
         <p>Or, <a href="#" className={link} onClick={onClick}>choose a file using a file picker</a>.</p>
         <p>Supported file types: <code>.jpg</code>, <code>.png</code></p>
-        <p>Note: Your image file will not be sent to any remote server and will not leave your browser.</p>
+        <p style={{ textAlign: 'center' }}>
+          Note: Your image file will not be sent to any remote server and will not leave your browser.
+        </p>
       </div>
       <input
         type="file"

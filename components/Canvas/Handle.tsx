@@ -4,12 +4,12 @@ import React from 'react';
 import { Group, Rect } from 'react-konva';
 
 interface IProps {
-  x: number,
-  y: number,
-  scale: number,
-  onUpdate: (pos: Vector2d) => void,
-  setGroupDraggable: (draggable: boolean) => void,
-  refreshLayer: () => void,
+  x: number;
+  y: number;
+  scale: number;
+  onUpdate: (pos: Vector2d) => void;
+  setGroupDraggable: (draggable: boolean) => void;
+  refreshLayer: () => void;
 }
 
 function Handle({ x, y, scale, onUpdate, setGroupDraggable, refreshLayer }: IProps) {
