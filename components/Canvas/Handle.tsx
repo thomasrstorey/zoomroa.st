@@ -13,16 +13,19 @@ interface IProps {
 }
 
 function Handle({ x, y, scale, onUpdate, setGroupDraggable, refreshLayer }: IProps) {
-  const handleSize = Math.max(20, Math.floor(20 / scale));
+  const handleSize = Math.max(30, Math.floor(30 / scale));
   const onDragMove = (event: Konva.KonvaEventObject<DragEvent>) => {
-    const active = event.currentTarget;
+    const active = event.currentTarget as Konva.Rect;
     const x = active.x();
     const y = active.y();
+    active.stroke('yellow');
     onUpdate({ x, y });
     refreshLayer();
   };
 
-  const onDragEnd = () => {
+  const onDragEnd = (event: Konva.KonvaEventObject<DragEvent>) => {
+    const rect = event.currentTarget as Konva.Rect;
+    rect.stroke('white');
     setGroupDraggable(true);
     refreshLayer();
   };

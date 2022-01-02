@@ -24,14 +24,12 @@ interface IProps {
 }
 
 interface IState {
-  selectPos: Vector2d;
-  selectHeight: number;
-  selectWidth: number;
-  scale: number;
+  selectPos: Vector2d,
+  selectHeight: number,
+  selectWidth: number,
+  scale: number,
 }
 
-const CANVAS_WIDTH = 900;
-const CANVAS_HEIGHT = 600;
 const SELECT_START_WIDTH = 200;
 const SELECT_START_HEIGHT = 200;
 
@@ -52,11 +50,11 @@ class Canvas extends React.Component<IProps, IState> {
   public componentDidMount() {
     const {
       image,
-      canvasWidth = CANVAS_WIDTH,
-      canvasHeight = CANVAS_HEIGHT,
       selectWidth = SELECT_START_WIDTH,
       selectHeight = SELECT_START_HEIGHT,
     } = this.props;
+    const canvasWidth = window.innerWidth - 40;
+    const canvasHeight = Math.floor(window.innerHeight * 0.66);
     let scaleFactor = 1.0;
     if (image.width > image.height && image.width > canvasWidth) {
       scaleFactor = canvasWidth / image.width;
@@ -90,15 +88,14 @@ class Canvas extends React.Component<IProps, IState> {
     if (this.layerRef.current) {
       this.layerRef.current.batchDraw();
     }
+    window.addEventListener('resize', this.handleResize);
   }
 
   public render() {
-    const {
-      image,
-      canvasWidth = CANVAS_WIDTH,
-      canvasHeight = CANVAS_HEIGHT,
-    } = this.props;
+    const { image } = this.props;
     const { selectPos, selectHeight, selectWidth, scale } = this.state;
+    const canvasWidth = window.innerWidth - 40;
+    const canvasHeight = Math.floor(window.innerHeight * 0.66);
     return (
       <Stage
         width={canvasWidth}
@@ -276,6 +273,13 @@ class Canvas extends React.Component<IProps, IState> {
       x: this.state.selectPos.x,
       y: this.state.selectPos.y,
     };
+  };
+
+  private handleResize = () => {
+    if (this.stageRef.current) {
+      this.stageRef.current.width(window.innerWidth - 40);
+      this.stageRef.current.height(Math.floor(window.innerHeight * 0.66));
+    }
   };
 }
 

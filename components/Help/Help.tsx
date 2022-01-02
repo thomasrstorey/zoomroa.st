@@ -54,6 +54,12 @@ function Help() {
         <h2>Change Log</h2>
         <ul className={styles.paragraph}>
           <li>
+            <strong>1.3.1</strong> 01/01/2022
+            <ul>
+              <li>Improved mobile experience to some degree.</li>
+            </ul>
+          </li>
+          <li>
             <strong>1.3.0</strong> 01/01/2022
             <ul>
               <li>Updated dependencies.</li>

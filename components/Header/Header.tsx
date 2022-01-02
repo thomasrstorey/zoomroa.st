@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -8,9 +7,7 @@ function Header() {
   const router = useRouter();
   return (
     <>
-      <Head>
-      </Head>
-      <div style={{display: 'flex', marginBottom: '10px'}}>
+      <div style={{display: 'flex', marginBottom: '10px', justifyContent: 'space-between'}}>
         <div style={{flex: 1}}>
           <Link passHref href="/">
             <span className={title}>zoomroa.st</span>

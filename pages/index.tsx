@@ -113,7 +113,7 @@ function Index() {
       }}>
         {!!roast && (
           <>
-            <div style={{width: '620px'}}>
+            <div style={{width: '100%'}}>
               <h3>Your Fresh Roast:</h3>
               <p>Right-click the image and choose &quot;Save As&quot; to download.</p>
             </div>
@@ -123,6 +123,7 @@ function Index() {
                       arranged vertically from most zoomed out at the top, to most zoomed 
                       in at the bottom.`} 
                 src={roast}
+                style={{ maxWidth: '100%' }}
               />
             </div>
           </>
